@@ -47,15 +47,18 @@
           var path = sankey.link();
 
           // load the data
-          scope.$watch('data', function(newVal, oldVal) {
+          scope.$watch('data', function(data, oldVal) {
+            if (!data.links) {
+              return
+            }
             sankey
-              .nodes(scope.data.nodes)
-              .links(scope.data.links)
+              .nodes(data.nodes)
+              .links(data.links)
               .layout(32);
 
             // add in the links
             var link = svg.append('g').selectAll('.link')
-              .data(scope.data.links)
+              .data(data.links)
               .enter().append('path')
               .attr('class', 'link')
               .attr('d', path)
@@ -70,7 +73,7 @@
 
             // add in the nodes
             var node = svg.append('g').selectAll('.node')
-              .data(scope.data.nodes)
+              .data(data.nodes)
               .enter().append('g')
               .attr('class', 'node')
               .attr('transform', function(d) {
